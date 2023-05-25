@@ -14,12 +14,22 @@ struct UserDefaultsHelper {
     private static let userDefaults = UserDefaults(suiteName: "\(SwiftWorkmanagerPlugin.identifier).userDefaults")!
 
     enum Key {
+        case inputData
         case callbackHandle
         case isDebug
 
         var stringValue: String {
             return "\(SwiftWorkmanagerPlugin.identifier).\(self)"
         }
+    }
+
+    // MARK: inputData
+    static func storeInputData(_ inputData: String) {
+       store(inputData, key: .inputData)
+    }
+
+    static func getStoredInputData() -> String? {
+        return getValue(for: .inputData)
     }
 
     // MARK: callbackHandle

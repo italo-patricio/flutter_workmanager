@@ -32,6 +32,7 @@ public class SwiftWorkmanagerPlugin: FlutterPluginAppLifeCycleDelegate {
                     case initialDelaySeconds
                     case networkType
                     case requiresCharging
+                    case inputData
                 }
             }
             struct CancelAllTasks {
@@ -50,12 +51,13 @@ public class SwiftWorkmanagerPlugin: FlutterPluginAppLifeCycleDelegate {
     }
 
     @available(iOS 13.0, *)
-    private static func handleBGProcessingTask(_ task: BGProcessingTask) {
+    private static func handleBGProcessingTask(_ task: BGProcessingTask, inputData: String?) {
         let operationQueue = OperationQueue()
 
         // Create an operation that performs the main part of the background task
         let operation = BackgroundTaskOperation(
             task.identifier,
+            inputData: inputData,
             flutterPluginRegistrantCallback: SwiftWorkmanagerPlugin.flutterPluginRegistrantCallback
         )
 
@@ -83,7 +85,7 @@ public class SwiftWorkmanagerPlugin: FlutterPluginAppLifeCycleDelegate {
                 using: nil
             ) { task in
                 if let task = task as? BGProcessingTask {
-                    handleBGProcessingTask(task)
+                    handleBGProcessingTask(task, inputData: UserDefaultsHelper.getStoredInputData())
                 }
             }
         }
@@ -167,6 +169,10 @@ extension SwiftWorkmanagerPlugin: FlutterPlugin {
                    let networkType = NetworkType(fromDart: networkTypeInput),
                    networkType == .connected || networkType == .metered {
                     requiresNetworkConnectivity = true
+                }
+                
+                if let inputData = arguments[method.Arguments.inputData.rawValue] as? String {
+                    UserDefaultsHelper.storeInputData(inputData)
                 }
 
                 request.earliestBeginDate = Date(timeIntervalSinceNow: Double(initialDelaySeconds))
