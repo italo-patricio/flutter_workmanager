@@ -75,15 +75,15 @@ private object RegisterTaskHandler : CallHandler<WorkManagerCall.RegisterTask> {
             result.error(
                 "1",
                 "You have not properly initialized the Flutter WorkManager Package. " +
-                    "You should ensure you have called the 'initialize' function first! " +
-                    "Example: \n" +
-                    "\n" +
-                    "`Workmanager().initialize(\n" +
-                    "  callbackDispatcher,\n" +
-                    " )`" +
-                    "\n" +
-                    "\n" +
-                    "The `callbackDispatcher` is a top level function. See example in repository.",
+                        "You should ensure you have called the 'initialize' function first! " +
+                        "Example: \n" +
+                        "\n" +
+                        "`Workmanager().initialize(\n" +
+                        "  callbackDispatcher,\n" +
+                        " )`" +
+                        "\n" +
+                        "\n" +
+                        "The `callbackDispatcher` is a top level function. See example in repository.",
                 null
             )
             return
